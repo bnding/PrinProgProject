@@ -2,7 +2,7 @@ import pandas as pd
 
 ################################
 def murderRateState():
-	xl = pd.ExcelFile('Wyoming.xlsx')
+	xl = pd.ExcelFile('Murders.xlsx')
 	df = xl.parse("Sheet1")
 	statesDict = dict()
 
@@ -15,6 +15,39 @@ def murderRateState():
 			statesDict.update(s)
 
 	print(statesDict)
+
+################################
+
+def murderRateDec():
+	xl = pd.ExcelFile('Wyoming.xlsx')
+	df = xl.parse('Sheet1')
+	
+	df['Decade'] = (df['Year'] // 10) * 10
+
+	#ONE METHOD
+	#counts = df.groupby(['State', 'Decade']).count()
+	#counts = counts.reset_index()[['State', 'Decade','Victim Count']]
+
+	#ANOTHER METHOD
+	counts = df.loc[:,['State', 'Decade','Victim Count']].groupby(['State', 'Decade']).count()
+
+	print(counts)
+
+
+################################
+
+def weaponRelationship():
+	xl = pd.ExcelFile('Wyoming.xlsx')
+	df = xl.parse('Sheet1')
+
+	#ONE METHOD
+	# counts = df.groupby(['Weapon', 'Relationship']).count()
+	# counts = counts.reset_index()[['Weapon', 'Relationship','Victim Count']]
+
+	#ANOTHER METHOD
+	counts = df.loc[:,['Weapon', 'Relationship','Victim Count']].groupby(['Weapon', 'Relationship']).count()
+	print(counts)
+
 
 ################################
 
@@ -40,55 +73,6 @@ def yearMurders():
 
 	print(yrStateDict)
 
-################################
-
-#scrapping this for now
-# def murderRateDec():
-# 	xl = pd.ExcelFile('Wyoming.xlsx')
-# 	df = xl.parse('Sheet1')
-# 	decDict = dict()
-# 	currDecDict = dict()
-
-# 	currDec = df['Year'][0]
-# 	# yearCount = 0
-
-# 	entries = df[['Year', 'State']]
-# 	stateYear = df[['State', 'Year']]
-# 	#print(entries['Year'])
-# 	entries = entries.sort_values(by='Year', ascending=True)
-# 	print(entries)
-
-# 	allStates = entries['State']
-# 	years = entries['Year']
-
-# 	df.groupby([df['Year'].dt.year.rename('year'), df['State'].dt.state.rename('state')]).agg({'count'})
-# 	print(df)
-# 	statesYear = {}
-# 	key = None
-# 	for item in SOMETHINGHERE:
-# 		if key is None:
-# 			key = item
-# 		else:
-# 			if key not in statesYear:
-# 				statesYear[key] = []
-# 			statesYear[key].append(item)
-# 			key = None
-# 	print(statesYear)
-# #TODO: Need to find a way to get states in the current decade:
-# 	for year in years:
-# 		if year - currDec < 10:
-# 			for key in statesYear[year]:
-# 				if key in currDecDict:
-# 					decDict[key] += 1
-# 				else:
-# 					s = {key:1}
-# 					currDecDict.update(s)
-# 			decDict.update({currDec : currDecDict})
-# 		else: 
-# 			currDec = year
-
-# 	print(decDict)
-
-# murderRateState()
-yearMurders()
-# murderRateDec()
+#murderRateDec()
+#yearMurders()
+weaponRelationship()
