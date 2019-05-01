@@ -23,7 +23,7 @@ def murderRateState():
 ################################
 
 def murderRateDec():
-	xl = pd.ExcelFile('Wyoming.xlsx')
+	xl = pd.ExcelFile('Murders.xlsx')
 	df = xl.parse('Sheet1')
 	# df['Decade'] = (df['Year'] // 10) * 10
 	# decade = df['Decade']
@@ -108,7 +108,7 @@ def weaponRelationship():
 ################################
 
 def raceWeapon():
-	xl = pd.ExcelFile('Wyoming.xlsx')
+	xl = pd.ExcelFile('Murders.xlsx')
 	df = xl.parse('Sheet1')
 	race = df['Perpetrator Race']
 	weapon = df['Weapon']
@@ -135,6 +135,55 @@ def raceWeapon():
 
 ################################
 
+def murderAge():
+	xl = pd.ExcelFile('Wyoming.xlsx')
+	df = xl.parse('Sheet1')
+	age = df['Perpetrator Age']
+	freq = dict()
+
+	for key in age:
+		if key in freq:
+			freq[key] += 1
+		else:
+			s = {key:1}
+			freq.update(s)
+
+	#print(freq)
+
+	file = open("MurderAge.js", "w+")
+	file.write(json.dumps(freq))
+	file.close()
+
+################################
+
+def murderAgeState():
+	xl = pd.ExcelFile('Wyoming.xlsx')
+	df = xl.parse('Sheet1')
+	age = df['Perpetrator Age']
+	state = df['State']
+	freq = dict()
+
+	for i in range (0, len(df)):
+		currState = state.iloc[i]
+		currAge = age.iloc[i]
+		if currState in freq:
+			if currAge in freq[currState]:
+				freq[currState][currAge] += 1
+			else:
+				key = {currAge: 1}
+				freq[currState].update(key)
+		else:
+			key = {currState:{currAge:1}}
+			freq.update(key)
+
+	#print(freq)
+
+	file = open("MurderAgeState.js", "w+")
+	file.write(json.dumps(freq))
+	file.close()
+
+################################
+
 def cityWeapons():
 	df = pd.ExcelFile('Murders.xlsx').parse('Sheet1')
 	stateDf = df['State']
@@ -149,7 +198,7 @@ def cityWeapons():
 		if currState in data:
 			if currCity in data[currState]:
 				if currWeapon in data[currState][currCity]:
-					data[currState][currCity][currWeapon] += 1;
+					data[currState][currCity][currWeapon] += 1
 				else:
 					s = {currWeapon: 1}
 					data[currState][currCity].update(s)
@@ -169,7 +218,7 @@ def cityWeapons():
 #################################PERPETRATOR SEX#############################
 
 def perpSex():
-    x1 = pd.ExcelFile('SmallSample.xlsx')
+    x1 = pd.ExcelFile('Murders.xlsx')
     df = x1.parse("Sheet1")
     
     perpSexDict = dict()
@@ -189,7 +238,7 @@ def perpSex():
 ##############################PERPETRATOR RACE##############################
 
 def perpRace():
-    x1 = pd.ExcelFile('SmallSample.xlsx')
+    x1 = pd.ExcelFile('Murders.xlsx')
     df = x1.parse("Sheet1")
     
     perpRaceDict = dict()
@@ -209,7 +258,7 @@ def perpRace():
 ##############################VICTIM SEX##############################
     
 def victSex():
-    x1 = pd.ExcelFile('SmallSample.xlsx')
+    x1 = pd.ExcelFile('Murders.xlsx')
     df = x1.parse("Sheet1")
     
     victSexDict = dict()
@@ -228,7 +277,7 @@ def victSex():
 ##############################VICTIM RACE##############################
 
 def victRace():
-    x1 = pd.ExcelFile('SmallSample.xlsx')
+    x1 = pd.ExcelFile('Murders.xlsx')
     df = x1.parse("Sheet1")
     
     victRaceDict = dict()
@@ -246,7 +295,7 @@ def victRace():
 ####################################AGENCY NAME IS EACH STATE########################
 
 def stateAgen():
-	xl = pd.ExcelFile('SmallSample.xlsx')
+	xl = pd.ExcelFile('Murders.xlsx')
 	df = xl.parse('Sheet1')
 	yrDf = df['State']
 	stateDf = df['Agency Name']
@@ -271,7 +320,7 @@ def stateAgen():
 #########################################Weapon Used Based on Perpetrator Sex############################################
 
 def weaponPerpSex():
-	xl = pd.ExcelFile('SmallSample.xlsx')
+	xl = pd.ExcelFile('Murders.xlsx')
 	df = xl.parse('Sheet1')
 	yrDf = df['Weapon']
 	stateDf = df['Perpetrator Sex']
@@ -298,7 +347,7 @@ def weaponPerpSex():
 
 
 def crimesMonth():
-    x1 = pd.ExcelFile('SmallSample.xlsx')
+    x1 = pd.ExcelFile('Murders.xlsx')
     df = x1.parse("Sheet1")
     
     monthDict = dict()
@@ -315,7 +364,9 @@ def crimesMonth():
 
 ######################################################################################################
 
-murderRateDec()
+#murderRateDec()
 #yearMurders()
 #weaponRelationship()
 #raceWeapon()
+#murderAge()
+murderAgeState()
