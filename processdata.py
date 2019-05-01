@@ -179,19 +179,27 @@ def stateAgen():
 
 
 #########################################Weapon Used Based on Perpetrator Sex############################################
-
 def weaponPerpSex():
 	xl = pd.ExcelFile('SmallSample.xlsx')
 	df = xl.parse('Sheet1')
+	yrDf = df['Weapon']
+	stateDf = df['Perpetrator Sex']
+	yrStateDict = dict()
 
-	#ONE METHOD
-	# counts = df.groupby(['Weapon', 'Relationship']).count()
-	# counts = counts.reset_index()[['Weapon', 'Relationship','Victim Count']]
+	for x in range (0, len(df)):
+		currYear = yrDf.iloc[x]
+		currState = stateDf.iloc[x]
+		if currYear in yrStateDict:
+			if currState in yrStateDict[currYear]:
+				yrStateDict[currYear][currState] += 1
+			else:
+				s = {currState:1}
+				yrStateDict[currYear].update(s)
+		else:
+			s = {currYear:{currState: 1}}
+			yrStateDict.update(s)
 
-	#ANOTHER METHOD
-	counts = df.loc[:,['Weapon', 'Perpetrator Sex','Record ID']].groupby(['Weapon', 'Perpetrator Sex']).count()
-	print(counts)
-
+	print(yrStateDict)
 
 #######################################How many crimes happen per month#################################################################
 
