@@ -76,3 +76,131 @@ def yearMurders():
 #murderRateDec()
 #yearMurders()
 weaponRelationship()
+#################################PERPETRATOR SEX#############################
+
+def perpSex():
+    x1 = pd.ExcelFile('SmallSample.xlsx')
+    df = x1.parse("Sheet1")
+    
+    perpSexDict = dict()
+
+    allPerp = df["Perpetrator Sex"]
+    for key in allPerp:
+        if key in perpSexDict:
+            perpSexDict[key] += 1
+
+        else:
+            s = {key:1}
+            perpSexDict.update(s)
+    print(perpSexDict)
+        
+
+
+##############################PERPETRATOR RACE##############################
+
+def perpRace():
+    x1 = pd.ExcelFile('SmallSample.xlsx')
+    df = x1.parse("Sheet1")
+    
+    perpRaceDict = dict()
+
+    allPerp = df["Perpetrator Race"]
+    for key in allPerp:
+        if key in perpRaceDict:
+            perpRaceDict[key] += 1
+
+        else:
+            s = {key:1}
+            perpRaceDict.update(s)
+    print(perpRaceDict)
+        
+
+
+##############################VICTIM SEX##############################
+    
+def victSex():
+    x1 = pd.ExcelFile('SmallSample.xlsx')
+    df = x1.parse("Sheet1")
+    
+    victSexDict = dict()
+
+    allVicts = df["Victim Sex"]
+    for key in allVicts:
+        if key in victSexDict:
+            victSexDict[key] += 1
+
+        else:
+            s = {key:1}
+            victSexDict.update(s)
+    print(victSexDict)
+
+   
+##############################VICTIM RACE##############################
+
+def victRace():
+    x1 = pd.ExcelFile('SmallSample.xlsx')
+    df = x1.parse("Sheet1")
+    
+    victRaceDict = dict()
+
+    allVicts = df["Victim Race"]
+    for key in allVicts:
+        if key in victRaceDict:
+            victRaceDict[key] += 1
+
+        else:
+            s = {key:1}
+            victRaceDict.update(s)
+    print(victRaceDict)
+
+####################################AGENCY NAME IS EACH STATE########################
+
+def stateAgen():
+	xl = pd.ExcelFile('SmallSample.xlsx')
+	df = xl.parse('Sheet1')
+
+	#ONE METHOD
+	# counts = df.groupby(['Weapon', 'Relationship']).count()
+	# counts = counts.reset_index()[['Weapon', 'Relationship','Victim Count']]
+
+	#ANOTHER METHOD
+	counts = df.loc[:,['State', 'Agency Name','Record ID']].groupby(['State', 'Agency Name']).count()
+	print(counts)
+
+
+#########################################Weapon Used Based on Perpetrator Sex############################################
+
+def weaponPerpSex():
+	xl = pd.ExcelFile('SmallSample.xlsx')
+	df = xl.parse('Sheet1')
+
+	#ONE METHOD
+	# counts = df.groupby(['Weapon', 'Relationship']).count()
+	# counts = counts.reset_index()[['Weapon', 'Relationship','Victim Count']]
+
+	#ANOTHER METHOD
+	counts = df.loc[:,['Weapon', 'Perpetrator Sex','Record ID']].groupby(['Weapon', 'Perpetrator Sex']).count()
+	print(counts)
+
+
+#######################################How many crimes happen per month#################################################################
+
+
+def crimesMonth():
+    x1 = pd.ExcelFile('SmallSample.xlsx')
+    df = x1.parse("Sheet1")
+    
+    monthDict = dict()
+
+    allMonth = df["Month"]
+    for key in allMonth:
+        if key in monthDict:
+            monthDict[key] += 1
+
+        else:
+            s = {key:1}
+            monthDict.update(s)
+    print(monthDict)
+
+######################################################################################################
+
