@@ -1,4 +1,5 @@
 import pandas as pd
+import json
 
 ################################
 def murderRateState():
@@ -14,68 +15,157 @@ def murderRateState():
 			s = {key:1}
 			statesDict.update(s)
 
-	print(statesDict)
+	#print(statesDict)
+	file = open("MurderRateState.js", "w+")
+	file.write(json.dumps(freq))
+	file.close()
 
 ################################
 
 def murderRateDec():
 	xl = pd.ExcelFile('Wyoming.xlsx')
 	df = xl.parse('Sheet1')
-	
-	df['Decade'] = (df['Year'] // 10) * 10
+	# df['Decade'] = (df['Year'] // 10) * 10
+	# decade = df['Decade']
+	# decade = df.Decade.unique()
+	year = df['Year']
+	state = df['State']
+	freq = dict()
+
+	for i in range(0, len(df)):
+		currYear = year.iloc[i]
+		if(currYear >= 1980 and currYear < 1989):
+			currDecade = 1980
+		elif(currYear >= 1990 and currYear < 2000):
+			currDecade = 1990
+		elif(currYear >= 2000 and currYear < 2010):
+			currDecade = 2000
+		elif(currYear >= 2010):
+			currDecade = 2010
+		currState = state.iloc[i]
+		if currDecade in freq:
+			if currState in freq[currDecade]:
+				freq[currDecade][currState] += 1
+			else:
+				key = {currState: 1}
+				freq[currDecade].update(key)
+		else:
+			key = {currDecade:{currState: 1}}
+			freq.update(key)
+
+	#print(freq)
+
+	file = open("MurderRateDecState.js", "w+")
+	file.write(json.dumps(freq))
+	file.close()
 
 	#ONE METHOD
 	#counts = df.groupby(['State', 'Decade']).count()
 	#counts = counts.reset_index()[['State', 'Decade','Victim Count']]
 
 	#ANOTHER METHOD
-	counts = df.loc[:,['State', 'Decade','Victim Count']].groupby(['State', 'Decade']).count()
-
-	print(counts)
+	# counts = df.loc[:,['Decade', 'State','Victim Count']].groupby(['Decade', 'State']).count()
+	# all_murders = counts.to_dict()
+	# print(all_murders)
 
 
 ################################
 
 def weaponRelationship():
-	xl = pd.ExcelFile('Wyoming.xlsx')
+	xl = pd.ExcelFile('Murders.xlsx')
 	df = xl.parse('Sheet1')
+	relationship = df['Relationship']
+	weapon = df['Weapon']
+	freq = dict()
+
+	for i in range(0, len(df)):
+		currRelationship = relationship.iloc[i]
+		currWeapon = weapon.iloc[i]
+		if currRelationship in freq:
+			if currWeapon in freq[currRelationship]:
+				freq[currRelationship][currWeapon] += 1
+			else:
+				key = {currWeapon: 1}
+				freq[currRelationship].update(key)
+		else:
+			key = {currRelationship:{currWeapon: 1}}
+			freq.update(key)
+
+	#print(freq)
+
+	file = open("WeaponRelationship.js", "w+")
+	file.write(json.dumps(freq))
+	file.close()
 
 	#ONE METHOD
-	# counts = df.groupby(['Weapon', 'Relationship']).count()
-	# counts = counts.reset_index()[['Weapon', 'Relationship','Victim Count']]
+	#counts = df.groupby(['Weapon', 'Relationship']).count()
+	#counts = counts.reset_index()[['Weapon', 'Relationship','Victim Count']]
 
 	#ANOTHER METHOD
-	counts = df.loc[:,['Weapon', 'Relationship','Victim Count']].groupby(['Weapon', 'Relationship']).count()
-	print(counts)
-
+	#counts = df.loc[:,['Weapon', 'Relationship','Victim Count']].groupby(['Weapon', 'Relationship']).count()
+	#all_weapons = counts.to_dict()
 
 ################################
 
-def yearMurders():
-	xl = pd.ExcelFile('Murders.xlsx')
+def raceWeapon():
+	xl = pd.ExcelFile('Wyoming.xlsx')
 	df = xl.parse('Sheet1')
-	yrDf = df['Year']
+	race = df['Perpetrator Race']
+	weapon = df['Weapon']
+	freq = dict()
+
+	for i in range(0, len(df)):
+		currRace = race.iloc[i]
+		currWeapon = weapon.iloc[i]
+		if currRace in freq:
+			if currWeapon in freq[currRace]:
+				freq[currRace][currWeapon] += 1
+			else:
+				key = {currWeapon: 1}
+				freq[currRace].update(key)
+		else:
+			key = {currRace:{currWeapon: 1}}
+			freq.update(key)
+
+	#print(freq)
+
+	file = open("WeaponRace.js", "w+")
+	file.write(json.dumps(freq))
+	file.close()
+
+################################
+
+def cityWeapons():
+	df = pd.ExcelFile('Murders.xlsx').parse('Sheet1')
 	stateDf = df['State']
-	yrStateDict = dict()
+	cityDf = df['City']
+	weaponDf = df['Weapon']
+	data = dict()
 
 	for x in range (0, len(df)):
-		currYear = yrDf.iloc[x]
 		currState = stateDf.iloc[x]
-		if currYear in yrStateDict:
-			if currState in yrStateDict[currYear]:
-				yrStateDict[currYear][currState] += 1
+		currCity = cityDf.iloc[x]
+		currWeapon = weaponDf.iloc[x]
+		if currState in data:
+			if currCity in data[currState]:
+				if currWeapon in data[currState][currCity]:
+					data[currState][currCity][currWeapon] += 1;
+				else:
+					s = {currWeapon: 1}
+					data[currState][currCity].update(s)
 			else:
-				s = {currState:1}
-				yrStateDict[currYear].update(s)
+				s = {currCity:{currWeapon:1}}
+				data[currState].update(s)
 		else:
-			s = {currYear:{currState: 1}}
-			yrStateDict.update(s)
+			s = {currState:{currCity:{currWeapon:1}}}
+			data.update(s)
 
-	print(yrStateDict)
+	f = open("CityWeapons.txt", "w+")
+	f.write(json.dumps(data))
+	f.close()
 
-#murderRateDec()
-#yearMurders()
-weaponRelationship()
+	print("done writing file\n")
+
 #################################PERPETRATOR SEX#############################
 
 def perpSex():
@@ -179,6 +269,7 @@ def stateAgen():
 
 
 #########################################Weapon Used Based on Perpetrator Sex############################################
+
 def weaponPerpSex():
 	xl = pd.ExcelFile('SmallSample.xlsx')
 	df = xl.parse('Sheet1')
@@ -200,8 +291,9 @@ def weaponPerpSex():
 			yrStateDict.update(s)
 
 	print(yrStateDict)
-	
-#########
+	print(counts)
+
+
 #######################################How many crimes happen per month#################################################################
 
 
@@ -223,3 +315,7 @@ def crimesMonth():
 
 ######################################################################################################
 
+murderRateDec()
+#yearMurders()
+#weaponRelationship()
+#raceWeapon()
