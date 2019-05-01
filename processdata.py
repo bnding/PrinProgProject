@@ -1,4 +1,5 @@
 import pandas as pd
+import json
 
 ################################
 def murderRateState():
@@ -24,15 +25,9 @@ def murderRateDec():
 	
 	df['Decade'] = (df['Year'] // 10) * 10
 
-	#ONE METHOD
-	#counts = df.groupby(['State', 'Decade']).count()
-	#counts = counts.reset_index()[['State', 'Decade','Victim Count']]
-
-	#ANOTHER METHOD
 	counts = df.loc[:,['State', 'Decade','Victim Count']].groupby(['State', 'Decade']).count()
 
 	print(counts)
-
 
 ################################
 
@@ -40,11 +35,6 @@ def weaponRelationship():
 	xl = pd.ExcelFile('Wyoming.xlsx')
 	df = xl.parse('Sheet1')
 
-	#ONE METHOD
-	# counts = df.groupby(['Weapon', 'Relationship']).count()
-	# counts = counts.reset_index()[['Weapon', 'Relationship','Victim Count']]
-
-	#ANOTHER METHOD
 	counts = df.loc[:,['Weapon', 'Relationship','Victim Count']].groupby(['Weapon', 'Relationship']).count()
 	print(counts)
 
@@ -73,6 +63,45 @@ def yearMurders():
 
 	print(yrStateDict)
 
-#murderRateDec()
+################################
+
+def cityWeapons():
+	df = pd.ExcelFile('Murders.xlsx').parse('Sheet1')
+	stateDf = df['State']
+	cityDf = df['City']
+	weaponDf = df['Weapon']
+	data = dict()
+
+	for x in range (0, len(df)):
+		currState = stateDf.iloc[x]
+		currCity = cityDf.iloc[x]
+		currWeapon = weaponDf.iloc[x]
+		if currState in data:
+			if currCity in data[currState]:
+				if currWeapon in data[currState][currCity]:
+					data[currState][currCity][currWeapon] += 1;
+				else:
+					s = {currWeapon: 1}
+					data[currState][currCity].update(s)
+			else:
+				s = {currCity:{currWeapon:1}}
+				data[currState].update(s)
+		else:
+			s = {currState:{currCity:{currWeapon:1}}}
+			data.update(s)
+
+	f = open("CityWeapons.txt", "w+")
+	f.write(json.dumps(data))
+	f.close()
+
+	print("done writing file\n")
+
+
+
+# murderRateDec()
+cityWeapons()
 #yearMurders()
-weaponRelationship()
+# weaponRelationship()
+
+#####################
+
