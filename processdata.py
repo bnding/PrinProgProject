@@ -129,14 +129,14 @@ def raceWeapon():
 
 	#print(freq)
 
-	file = open("WeaponRace.js", "w+")
+	file = open("RaceWeapon.js", "w+")
 	file.write(json.dumps(freq))
 	file.close()
 
 ################################
 
 def murderAge():
-	xl = pd.ExcelFile('Wyoming.xlsx')
+	xl = pd.ExcelFile('Murders.xlsx')
 	df = xl.parse('Sheet1')
 	age = df['Perpetrator Age']
 	freq = dict()
@@ -157,7 +157,7 @@ def murderAge():
 ################################
 
 def murderAgeState():
-	xl = pd.ExcelFile('Wyoming.xlsx')
+	xl = pd.ExcelFile('Murders.xlsx')
 	df = xl.parse('Sheet1')
 	age = df['Perpetrator Age']
 	state = df['State']
@@ -209,7 +209,7 @@ def cityWeapons():
 			s = {currState:{currCity:{currWeapon:1}}}
 			data.update(s)
 
-	f = open("CityWeapons.txt", "w+")
+	f = open("CityWeapons.js", "w+")
 	f.write(json.dumps(data))
 	f.close()
 
@@ -231,8 +231,10 @@ def perpSex():
         else:
             s = {key:1}
             perpSexDict.update(s)
-    print(perpSexDict)
-        
+    #print(perpSexDict)
+    file = open("PerpSex.js", "w+")
+	file.write(json.dumps(freq))
+	file.close()
 
 
 ##############################PERPETRATOR RACE##############################
@@ -251,8 +253,10 @@ def perpRace():
         else:
             s = {key:1}
             perpRaceDict.update(s)
-    print(perpRaceDict)
-        
+    #print(perpRaceDict)
+	file = open("PerpRace.js", "w+")
+	file.write(json.dumps(freq))
+	file.close()  
 
 
 ##############################VICTIM SEX##############################
@@ -271,8 +275,10 @@ def victSex():
         else:
             s = {key:1}
             victSexDict.update(s)
-    print(victSexDict)
-
+    #print(victSexDict)
+	file = open("VictSex.js", "w+")
+	file.write(json.dumps(freq))
+	file.close()  
    
 ##############################VICTIM RACE##############################
 
@@ -290,7 +296,10 @@ def victRace():
         else:
             s = {key:1}
             victRaceDict.update(s)
-    print(victRaceDict)
+    #print(victRaceDict)
+    file = open("VictRace.js", "w+")
+	file.write(json.dumps(freq))
+	file.close()  
 
 ####################################AGENCY NAME IS EACH STATE########################
 
@@ -314,7 +323,10 @@ def stateAgen():
 			s = {currYear:{currState: 1}}
 			yrStateDict.update(s)
 
-	print(yrStateDict)
+	#print(yrStateDict)
+	file = open("StateAgen.js", "w+")
+	file.write(json.dumps(freq))
+	file.close()  
 
 
 #########################################Weapon Used Based on Perpetrator Sex############################################
@@ -339,8 +351,11 @@ def weaponPerpSex():
 			s = {currYear:{currState: 1}}
 			yrStateDict.update(s)
 
-	print(yrStateDict)
-	print(counts)
+	# print(yrStateDict)
+	# print(counts)
+	file = open("WeaponPerpSex.js", "w+")
+	file.write(json.dumps(freq))
+	file.close()  
 
 
 #######################################How many crimes happen per month#################################################################
@@ -360,7 +375,10 @@ def crimesMonth():
         else:
             s = {key:1}
             monthDict.update(s)
-    print(monthDict)
+    #print(monthDict)
+    file = open("CrimesMonth.js", "w+")
+	file.write(json.dumps(freq))
+	file.close()  
 
 ######################################################################################################
 
