@@ -25,9 +25,6 @@ def murderRateState():
 def murderRateDecState():
 	xl = pd.ExcelFile('Murders.xlsx')
 	df = xl.parse('Sheet1')
-	# df['Decade'] = (df['Year'] // 10) * 10
-	# decade = df['Decade']
-	# decade = df.Decade.unique()
 	year = df['Year']
 	state = df['State']
 	freq = dict()
@@ -59,16 +56,6 @@ def murderRateDecState():
 	file.write(json.dumps(freq))
 	file.close()
 
-	#ONE METHOD
-	#counts = df.groupby(['State', 'Decade']).count()
-	#counts = counts.reset_index()[['State', 'Decade','Victim Count']]
-
-	#ANOTHER METHOD
-	# counts = df.loc[:,['Decade', 'State','Victim Count']].groupby(['Decade', 'State']).count()
-	# all_murders = counts.to_dict()
-	# print(all_murders)
-
-
 ################################
 
 def weaponRelationship():
@@ -96,14 +83,6 @@ def weaponRelationship():
 	file = open("WeaponRelationship.js", "w+")
 	file.write(json.dumps(freq))
 	file.close()
-
-	#ONE METHOD
-	#counts = df.groupby(['Weapon', 'Relationship']).count()
-	#counts = counts.reset_index()[['Weapon', 'Relationship','Victim Count']]
-
-	#ANOTHER METHOD
-	#counts = df.loc[:,['Weapon', 'Relationship','Victim Count']].groupby(['Weapon', 'Relationship']).count()
-	#all_weapons = counts.to_dict()
 
 ################################
 
@@ -157,7 +136,7 @@ def murderAge():
 ################################
 
 def murderRateAgeDec():
-	xl = pd.ExcelFile('Wyoming.xlsx')
+	xl = pd.ExcelFile('Murders.xlsx')
 	df = xl.parse('Sheet1')
 	year = df['Year']
 	age = df['Perpetrator Age']
@@ -185,15 +164,15 @@ def murderRateAgeDec():
 			freq.update(key)
 
 	#print(freq)
-
+	freq = dict((':'.join(k), v) for k,v in freq.items())
 	file = open("MurderRateAgeDec.js", "w+")
-	file.write(json.dumps(freq))
+	file.write(json.dumps(str(freq)))
 	file.close()
 
 ################################
 
 def murderAgeState():
-	xl = pd.ExcelFile('Wyoming.xlsx')
+	xl = pd.ExcelFile('Murders.xlsx')
 	df = xl.parse('Sheet1')
 	age = df['Perpetrator Age']
 	state = df['State']
@@ -213,9 +192,9 @@ def murderAgeState():
 			freq.update(key)
 
 	#print(freq)
-
+	freq = dict((':'.join(k), v) for k,v in freq.items())
 	file = open("MurderAgeState.js", "w+")
-	file.write(json.dumps(freq))
+	file.write(json.dumps(str(freq)))
 	file.close()
 
 ################################
@@ -362,7 +341,7 @@ def stateAgen():
 	file.close()  
 
 
-#########################################Weapon Used Based on Perpetrator Sex############################################
+###############################Weapon Used Based on Perpetrator Sex########################################
 
 def weaponPerpSex():
 	xl = pd.ExcelFile('Murders.xlsx')
@@ -391,8 +370,7 @@ def weaponPerpSex():
 	file.close()  
 
 
-#######################################How many crimes happen per month#################################################################
-
+#######################################How many crimes happen per month##################################################
 
 def crimesMonth():
 	x1 = pd.ExcelFile('Murders.xlsx')
@@ -414,10 +392,18 @@ def crimesMonth():
 
 ######################################################################################################
 
-#murderRateState()
-#murderRateDecState()
-#weaponRelationship()
-#raceWeapon()
-#murderAge()
-#murderRateAgeDec()
+murderRateState()
+murderRateDecState()
+weaponRelationship()
+raceWeapon()
+murderAge()
+murderRateAgeDec()
 murderAgeState()
+cityWeapons()
+perpSex()
+perpRace()
+victSex()
+victRace()
+stateAgen()
+weaponPerpSex()
+crimesMonth()
