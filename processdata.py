@@ -114,7 +114,7 @@ def raceWeapon():
 
 ################################
 
-def murderAge():
+def murderPerpAge():
 	xl = pd.ExcelFile('Murders.xlsx')
 	df = xl.parse('Sheet1')
 	age = df['Perpetrator Age']
@@ -135,7 +135,7 @@ def murderAge():
 
 ################################
 
-def murderRateAgeDec():
+def murderRatePerpAgeDec():
 	xl = pd.ExcelFile('Murders.xlsx')
 	df = xl.parse('Sheet1')
 	year = df['Year']
@@ -171,10 +171,95 @@ def murderRateAgeDec():
 
 ################################
 
-def murderAgeState():
+def murderPerpAgeState():
 	xl = pd.ExcelFile('Murders.xlsx')
 	df = xl.parse('Sheet1')
 	age = df['Perpetrator Age']
+	state = df['State']
+	freq = dict()
+
+	for i in range (0, len(df)):
+		currState = state.iloc[i]
+		currAge = age.iloc[i]
+		if currState in freq:
+			if currAge in freq[currState]:
+				freq[currState][currAge] += 1
+			else:
+				key = {currAge: 1}
+				freq[currState].update(key)
+		else:
+			key = {currState:{currAge:1}}
+			freq.update(key)
+
+	#print(freq)
+	freq = dict((':'.join(k), v) for k,v in freq.items())
+	file = open("MurderAgeState.js", "w+")
+	file.write(json.dumps(str(freq)))
+	file.close()
+
+################################
+
+def murderVicAge():
+	xl = pd.ExcelFile('Murders.xlsx')
+	df = xl.parse('Sheet1')
+	age = df['Victim Age']
+	freq = dict()
+
+	for key in age:
+		if key in freq:
+			freq[key] += 1
+		else:
+			s = {key:1}
+			freq.update(s)
+
+	#print(freq)
+
+	file = open("MurderAge.js", "w+")
+	file.write(json.dumps(freq))
+	file.close()
+
+################################
+
+def murderRateVicAgeDec():
+	xl = pd.ExcelFile('Murders.xlsx')
+	df = xl.parse('Sheet1')
+	year = df['Year']
+	age = df['Victim Age']
+	freq = dict()
+
+	for i in range(0, len(df)):
+		currYear = year.iloc[i]
+		if(currYear >= 1980 and currYear < 1989):
+			currDecade = 1980
+		elif(currYear >= 1990 and currYear < 2000):
+			currDecade = 1990
+		elif(currYear >= 2000 and currYear < 2010):
+			currDecade = 2000
+		elif(currYear >= 2010):
+			currDecade = 2010
+		currAge = age.iloc[i]
+		if currDecade in freq:
+			if currAge in freq[currDecade]:
+				freq[currDecade][currAge] += 1
+			else:
+				key = {currAge: 1}
+				freq[currDecade].update(key)
+		else:
+			key = {currDecade:{currAge: 1}}
+			freq.update(key)
+
+	#print(freq)
+	freq = dict((':'.join(k), v) for k,v in freq.items())
+	file = open("MurderRateAgeDec.js", "w+")
+	file.write(json.dumps(str(freq)))
+	file.close()
+
+################################
+
+def murderVicAgeState():
+	xl = pd.ExcelFile('Murders.xlsx')
+	df = xl.parse('Sheet1')
+	age = df['Victim Age']
 	state = df['State']
 	freq = dict()
 
