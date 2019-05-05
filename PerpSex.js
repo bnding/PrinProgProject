@@ -1,1 +1,1 @@
-{"Male": 399541, "Unknown": 190365, "Female": 48548}
+[{"Perpetrator Sex": "Female", "Freq": 48548}, {"Perpetrator Sex": "Male", "Freq": 399541}, {"Perpetrator Sex": "Unknown", "Freq": 190365}]
