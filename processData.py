@@ -86,7 +86,7 @@ def weaponRelationship():
 def raceWeapon():
 	xl = pd.ExcelFile('Murders.xlsx')
 	df = xl.parse('Sheet1')
-	race = df['Perpetrator Race']
+	"""race = df['Perpetrator Race']
 	weapon = df['Weapon']
 	freq = dict()
 
@@ -103,11 +103,14 @@ def raceWeapon():
 			key = {currRace:{currWeapon: 1}}
 			freq.update(key)
 
-	#print(freq)
-
-	file = open("RaceWeapon.js", "w+")
-	file.write(json.dumps(freq))
+	"""
+	stat_counter = collections.Counter(df['Perpetrator Race'])
+	states_counter = collections.Counter(df['Weapon'])
+	output_dicts = [{'Perpetrator Race': i, 'Weapon': m, 'Frequency': f} for i, r in stat_counter.items() for m, f in states_counter.items()]
+	file = open("WeaponRelationship.js", "w+")
+	file.write(json.dumps(output_dicts))
 	file.close()
+
 
 ################################
 
