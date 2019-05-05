@@ -68,29 +68,17 @@ def murderRateDecState():
 ################################
 
 def weaponRelationship():
+	
 	xl = pd.ExcelFile('Murders.xlsx')
-	df = xl.parse('Sheet1')
-	relationship = df['Relationship']
-	weapon = df['Weapon']
-	freq = dict()
+	df = xl.parse("Sheet1")
+	
+        #stat_counter = collections.Counter(df['Relationship'])
+	states_counter = collections.Counter(df['Weapon'])
 
-	for i in range(0, len(df)):
-		currRelationship = relationship.iloc[i]
-		currWeapon = weapon.iloc[i]
-		if currRelationship in freq:
-			if currWeapon in freq[currRelationship]:
-				freq[currRelationship][currWeapon] += 1
-			else:
-				key = {currWeapon: 1}
-				freq[currRelationship].update(key)
-		else:
-			key = {currRelationship:{currWeapon: 1}}
-			freq.update(key)
-
-	#print(freq)
-
+	stat_counter = collections.Counter(df['Relationship'])
+	output_dicts = [{'Relationship': i, 'Weapon': m, 'Frequency': f} for i, r in stat_counter.items() for m, f in states_counter.items()]
 	file = open("WeaponRelationship.js", "w+")
-	file.write(json.dumps(freq))
+	file.write(json.dumps(output_dicts))
 	file.close()
 
 ################################
