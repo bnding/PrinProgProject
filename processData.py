@@ -107,7 +107,7 @@ def raceWeapon():
 	stat_counter = collections.Counter(df['Perpetrator Race'])
 	states_counter = collections.Counter(df['Weapon'])
 	output_dicts = [{'Perpetrator Race': i, 'Weapon': m, 'Frequency': f} for i, r in stat_counter.items() for m, f in states_counter.items()]
-	file = open("WeaponRelationship.js", "w+")
+	file = open("RaceWeapon.js", "w+")
 	file.write(json.dumps(output_dicts))
 	file.close()
 
