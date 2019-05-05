@@ -437,9 +437,9 @@ def victRace():
 ####################################AGENCY NAME IS EACH STATE########################
 
 def stateAgen():
-	xl = pd.ExcelFile('Murders.xlsx')
+	xl = pd.ExcelFile('SmallSample.xlsx')
 	df = xl.parse('Sheet1')
-	yrDf = df['State']
+	"""yrDf = df['State']
 	stateDf = df['Agency Name']
 	yrStateDict = dict()
 
@@ -459,7 +459,15 @@ def stateAgen():
 	#print(yrStateDict)
 	file = open("StateAgen.js", "w+")
 	file.write(json.dumps(yrStateDict))
-	file.close()  
+	file.close()  """
+	stat_counter = collections.Counter(df['State'])
+	states_counter = collections.Counter(df['Agency Name'])
+	output_dicts = [{'State': i, 'Agency Name': m, 'Frequency': f} for i, r in stat_counter.items() for m, f in states_counter.items()]
+	file = open("StateAgen.js", "w+")
+	file.write(json.dumps(output_dicts))
+	file.close()
+
+
 
 
 ###############################Weapon Used Based on Perpetrator Sex########################################
