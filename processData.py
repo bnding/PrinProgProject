@@ -299,7 +299,7 @@ def murderVicAgeState():
 
 def cityWeapons():
 	df = pd.ExcelFile('Murders.xlsx').parse('Sheet1')
-	stateDf = df['State']
+	"""stateDf = df['State']
 	cityDf = df['City']
 	weaponDf = df['Weapon']
 	data = dict()
@@ -324,7 +324,19 @@ def cityWeapons():
 
 	f = open("CityWeapons.js", "w+")
 	f.write(json.dumps(data))
-	f.close()
+	f.close()"""
+	st_counter = collections.Counter(df['State'])
+        #stat_counter = collections.Counter(df['City'])
+        #stat_counter = collections.Counter(df['City'])
+
+	states_counter = collections.Counter(df['Weapon'])
+	stat_counter = collections.Counter(df['City'])
+
+	output_dicts = [{'State': s, 'City': i, 'Weapon': m, 'Frequency': f} for s, j in st_counter.items() for i, r in stat_counter.items() for m, f in states_counter.items()]
+	file = open("CityWeapons.js", "w+")
+	file.write(json.dumps(output_dicts))
+	file.close()
+
 
 #################################PERPETRATOR SEX#############################
 
