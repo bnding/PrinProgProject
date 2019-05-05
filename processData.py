@@ -179,7 +179,7 @@ def murderRatePerpAgeDec():
 def murderPerpAgeState():
 	xl = pd.ExcelFile('Murders.xlsx')
 	df = xl.parse('Sheet1')
-	age = df['Perpetrator Age']
+	"""age = df['Perpetrator Age']
 	state = df['State']
 	freq = dict()
 
@@ -196,9 +196,12 @@ def murderPerpAgeState():
 			key = {currState:{currAge:1}}
 			freq.update(key)
 
-	#print(freq)
+	#print(freq)"""
+	stat_counter = collections.Counter(df['Perpetrator Age'])
+	states_counter = collections.Counter(df['State'])
+	output_dicts = [{'Perpetrator Age': i, 'State': m, 'Frequency': f} for i, r in stat_counter.items() for m, f in states_counter.items()]
 	file = open("MurderPerpAgeState.js", "w+")
-	file.write(json.dumps(str(freq)))
+	file.write(json.dumps(output_dicts))
 	file.close()
 
 ################################
