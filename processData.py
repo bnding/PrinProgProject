@@ -1,23 +1,32 @@
 import pandas as pd
+import collections
 import json
 
 ################################
 def murderRateState():
 	xl = pd.ExcelFile('Murders.xlsx')
 	df = xl.parse("Sheet1")
-	statesDict = dict()
+	# statesDict1 = dict()
 
-	allStates = df["State"]
-	for key in allStates:
-		if key in statesDict:
-			statesDict[key] += 1
-		else:
-			s = {key:1}
-			statesDict.update(s)
+	# allStates = df["State"]
+	# for key in allStates:
+	# 	if key in statesDict1:
+	# 		statesDict1[key] += 1
+	# 	else:
+	# 		s = {key:1}
+	# 		statesDict1.update(s)
 
-	#print(statesDict)
+	# statesDict = list()
+	# statesDict.append(statesDict1)
+	# file = open("MurderRateState.js", "w+")
+	# file.write(json.dumps(statesDict))
+	# file.close()
+	# print(statesDict)
+
+	states_counter = collections.Counter(df['State'])
+	output_dicts = [{'State': m, 'Freq': f} for m, f in states_counter.items()]
 	file = open("MurderRateState.js", "w+")
-	file.write(json.dumps(statesDict))
+	file.write(json.dumps(output_dicts))
 	file.close()
 
 ################################
@@ -118,17 +127,23 @@ def murderPerpAge():
 	xl = pd.ExcelFile('Murders.xlsx')
 	df = xl.parse('Sheet1')
 	age = df['Perpetrator Age']
-	freq = dict()
+	# freq = dict()
 
-	for key in age:
-		if key in freq:
-			freq[key] += 1
-		else:
-			s = {key:1}
-			freq.update(s)
+	# for key in age:
+	# 	if key in freq:
+	# 		freq[key] += 1
+	# 	else:
+	# 		s = {key:1}
+	# 		freq.update(s)
 
-	#print(freq)
+	# #print(freq)
 
+	# file = open("MurderPerpAge.js", "w+")
+	# file.write(json.dumps(freq))
+	# file.close()
+
+	freq1 = collections.Counter(df['Perpetrator Age'])
+	freq = [{'Perpetrator Age': m, 'Freq': f} for m, f in freq1.items()]
 	file = open("MurderPerpAge.js", "w+")
 	file.write(json.dumps(freq))
 	file.close()
@@ -200,17 +215,19 @@ def murderPerpAgeState():
 def murderVicAge():
 	xl = pd.ExcelFile('Murders.xlsx')
 	df = xl.parse('Sheet1')
-	age = df['Victim Age']
-	freq = dict()
+	# age = df['Victim Age']
+	# freq = dict()
 
-	for key in age:
-		if key in freq:
-			freq[key] += 1
-		else:
-			s = {key:1}
-			freq.update(s)
+	# for key in age:
+	# 	if key in freq:
+	# 		freq[key] += 1
+	# 	else:
+	# 		s = {key:1}
+	# 		freq.update(s)
 
 	#print(freq)
+	freq1 = collections.Counter(df['Victim Age'])
+	freq = [{'Victim Age': m, 'Freq': f} for m, f in freq1.items()]
 
 	file = open("MurderVicAge.js", "w+")
 	file.write(json.dumps(freq))
@@ -315,19 +332,23 @@ def perpSex():
 	x1 = pd.ExcelFile('Murders.xlsx')
 	df = x1.parse("Sheet1")
     
-	perpSexDict = dict()
+	# perpSexDict = dict()
 
-	allPerp = df["Perpetrator Sex"]
-	for key in allPerp:
-		if key in perpSexDict:
-			perpSexDict[key] += 1
+	# allPerp = df["Perpetrator Sex"]
+	# for key in allPerp:
+	# 	if key in perpSexDict:
+	# 		perpSexDict[key] += 1
 
-		else:
-			s = {key:1}
-			perpSexDict.update(s)
+	# 	else:
+	# 		s = {key:1}
+	# 		perpSexDict.update(s)
 	#print(perpSexDict)
+
+	freq1 = collections.Counter(df['Perpetrator Sex'])
+	freq = [{'Perpetrator Sex': m, 'Freq': f} for m, f in freq1.items()]
+
 	file = open("PerpSex.js", "w+")
-	file.write(json.dumps(perpSexDict))
+	file.write(json.dumps(freq))
 	file.close()
 
 ##############################PERPETRATOR RACE##############################
@@ -336,18 +357,21 @@ def perpRace():
 	x1 = pd.ExcelFile('Murders.xlsx')
 	df = x1.parse("Sheet1")
     
-	perpRaceDict = dict()
+	# perpRaceDict = dict()
 
-	allPerp = df["Perpetrator Race"]
-	for key in allPerp:
-		if key in perpRaceDict:
-			perpRaceDict[key] += 1
-		else:
-			s = {key:1}
-			perpRaceDict.update(s)
+	# allPerp = df["Perpetrator Race"]
+	# for key in allPerp:
+	# 	if key in perpRaceDict:
+	# 		perpRaceDict[key] += 1
+	# 	else:
+	# 		s = {key:1}
+	# 		perpRaceDict.update(s)
 	#print(perpRaceDict)
+	freq1 = collections.Counter(df['Perpetrator Race'])
+	freq = [{'Perpetrator Race': m, 'Freq': f} for m, f in freq1.items()]
+
 	file = open("PerpRace.js", "w+")
-	file.write(json.dumps(perpRaceDict))
+	file.write(json.dumps(freq))
 	file.close()  
 
 
@@ -357,18 +381,21 @@ def victSex():
 	x1 = pd.ExcelFile('Murders.xlsx')
 	df = x1.parse("Sheet1")
     
-	victSexDict = dict()
+	# victSexDict = dict()
 
-	allVicts = df["Victim Sex"]
-	for key in allVicts:
-		if key in victSexDict:
-			victSexDict[key] += 1
-		else:
-			s = {key:1}
-			victSexDict.update(s)
+	# allVicts = df["Victim Sex"]
+	# for key in allVicts:
+	# 	if key in victSexDict:
+	# 		victSexDict[key] += 1
+	# 	else:
+	# 		s = {key:1}
+	# 		victSexDict.update(s)
 	#print(victSexDict)
+	freq1 = collections.Counter(df['Victim Sex'])
+	freq = [{'Victim Sex': m, 'Freq': f} for m, f in freq1.items()]
+
 	file = open("VictSex.js", "w+")
-	file.write(json.dumps(victSexDict))
+	file.write(json.dumps(freq))
 	file.close()  
    
 ##############################VICTIM RACE##############################
@@ -377,18 +404,22 @@ def victRace():
 	x1 = pd.ExcelFile('Murders.xlsx')
 	df = x1.parse("Sheet1")
     
-	victRaceDict = dict()
+	# victRaceDict = dict()
 
-	allVicts = df["Victim Race"]
-	for key in allVicts:
-		if key in victRaceDict:
-			victRaceDict[key] += 1
-		else:
-			s = {key:1}
-			victRaceDict.update(s)
+	# allVicts = df["Victim Race"]
+	# for key in allVicts:
+	# 	if key in victRaceDict:
+	# 		victRaceDict[key] += 1
+	# 	else:
+	# 		s = {key:1}
+	# 		victRaceDict.update(s)
 	#print(victRaceDict)
+
+	freq1 = collections.Counter(df['Victim Race'])
+	freq = [{'Victim Race': m, 'Freq': f} for m, f in freq1.items()]
+
 	file = open("VictRace.js", "w+")
-	file.write(json.dumps(victRaceDict))
+	file.write(json.dumps(freq))
 	file.close()  
 
 ####################################AGENCY NAME IS EACH STATE########################
@@ -453,38 +484,44 @@ def weaponPerpSex():
 def crimesMonth():
 	x1 = pd.ExcelFile('Murders.xlsx')
 	df = x1.parse("Sheet1")
-    
-	monthDict = dict()
+	# monthDict = dict()
+	# allMonth = df["Month"]
 
-	allMonth = df["Month"]
-	for key in allMonth:
-		if key in monthDict:
-			monthDict[key] += 1
-		else:
-			s = {key:1}
-			monthDict.update(s)
-	#print(monthDict)
+	# for key in allMonth:
+	# 	if key in monthDict:
+	# 		monthDict[key] += 1
+	# 	else:
+	# 		s = {key:1}
+	# 		monthDict.update(s)
+	# print(monthDict)
+	# file = open("CrimesMonth.js", "w+")
+	# file.write(json.dumps(monthDict))
+	# file.close()
+	month_counter = collections.Counter(df['Month'])
+
+	output_dicts = [{'Month': m, 'Freq': f} for m, f in month_counter.items()]
+	#print(json.dumps(output_dicts))
 	file = open("CrimesMonth.js", "w+")
-	file.write(json.dumps(monthDict))
-	file.close()  
+	file.write(json.dumps(output_dicts))
+	file.close()
 
 ######################################################################################################
 
 #murderRateState()
-#murderRateDecState()
-#weaponRelationship()
-#raceWeapon()
+# murderRateDecState()
+# weaponRelationship()
+# raceWeapon()
 #murderPerpAge()
-#murderRatePerpAgeDec()
-#murderPerpAgeState()
+# murderRatePerpAgeDec()
+# murderPerpAgeState()
 #murderVicAge()
-#murderRateVicAgeDec()
-#murderVicAgeState()
-#cityWeapons()
+# murderRateVicAgeDec()
+# murderVicAgeState()
+# cityWeapons()
 #perpSex()
-perpRace()
-# victSex()
+#perpRace()
+#victSex()
 #victRace()
 # stateAgen()
-#weaponPerpSex()
+# weaponPerpSex()
 #crimesMonth()
