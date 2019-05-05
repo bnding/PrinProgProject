@@ -1,1 +1,1 @@
-{"Native American/Alaska Native": 3602, "White": 218243, "Unknown": 196047, "Black": 214516, "Asian/Pacific Islander": 6046}
+[{"Perpetrator Race": "Asian/Pacific Islander", "Freq": 6046}, {"Perpetrator Race": "Black", "Freq": 214516}, {"Perpetrator Race": "Native American/Alaska Native", "Freq": 3602}, {"Perpetrator Race": "Unknown", "Freq": 196047}, {"Perpetrator Race": "White", "Freq": 218243}]
