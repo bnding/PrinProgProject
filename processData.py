@@ -536,19 +536,19 @@ def crimesMonth():
 
 #murderRateState()
 # murderRateDecState()
-# weaponRelationship()
-# raceWeapon()
+#weaponRelationship()
+#raceWeapon()
 #murderPerpAge()
 # murderRatePerpAgeDec()
-# murderPerpAgeState()
+#murderPerpAgeState()
 #murderVicAge()
 # murderRateVicAgeDec()
-# murderVicAgeState()
-# cityWeapons()
+#murderVicAgeState()
+# cityWeapons() # file too big 
 #perpSex()
 #perpRace()
 #victSex()
 #victRace()
-# stateAgen()
-# weaponPerpSex()
+# stateAgen() # too big file
+# weaponPerpSex() # too big file
 #crimesMonth()
