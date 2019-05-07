@@ -24,7 +24,7 @@ def murderRateState():
 	# print(statesDict)
 
 	states_counter = collections.Counter(df['State'])
-	output_dicts = [{'State': m, 'Freq': f} for m, f in states_counter.items()]
+	output_dicts = [{'State': s, 'Freq': f} for s, f in states_counter.items()]
 	file = open("MurderRateState.js", "w+")
 	file.write(json.dumps(output_dicts))
 	file.close()
@@ -60,25 +60,42 @@ def murderRateDecState():
 			freq.update(key)
 
 	#print(freq)
-
+	# freq1 = [{'Decade': d, 'State': [{'State': s, 'Freq': f}]}
+	# 	for d, sdict in freq.items()
+	# 	for s, f in sdict.items()]
+	# print(freq1)
+	freq1 = [{'Decade': d, 'State': [{'State': s, 'Freq': f} for s, f in ss.items()]} for d, ss in freq.items()]
+	#print(freq1)
 	file = open("MurderRateDecState.js", "w+")
-	file.write(json.dumps(freq))
+	file.write(json.dumps(freq1))
 	file.close()
 
 ################################
 
 def weaponRelationship():
-	
 	xl = pd.ExcelFile('Murders.xlsx')
-	df = xl.parse("Sheet1")
-	
-        #stat_counter = collections.Counter(df['Relationship'])
-	states_counter = collections.Counter(df['Weapon'])
+	df = xl.parse('Sheet1')
+	relationship = df['Relationship']
+	weapon = df['Weapon']
+	freq = dict()
 
-	stat_counter = collections.Counter(df['Relationship'])
-	output_dicts = [{'Relationship': i, 'Weapon': m, 'Frequency': f} for i, r in stat_counter.items() for m, f in states_counter.items()]
+	for i in range(0, len(df)):
+		currRelationship = relationship.iloc[i]
+		currWeapon = weapon.iloc[i]
+		if currRelationship in freq:
+			if currWeapon in freq[currRelationship]:
+				freq[currRelationship][currWeapon] += 1
+			else:
+				key = {currWeapon: 1}
+				freq[currRelationship].update(key)
+		else:
+			key = {currRelationship:{currWeapon: 1}}
+			freq.update(key)
+
+	#print(freq)
+	freq1 = [{'Weapon': w, 'Relationship': [{'Relationship': r, 'Freq': f} for r, f in ss.items()]} for w, ss in freq.items()]
 	file = open("WeaponRelationship.js", "w+")
-	file.write(json.dumps(output_dicts))
+	file.write(json.dumps(freq1))
 	file.close()
 
 ################################
@@ -86,7 +103,7 @@ def weaponRelationship():
 def raceWeapon():
 	xl = pd.ExcelFile('Murders.xlsx')
 	df = xl.parse('Sheet1')
-	"""race = df['Perpetrator Race']
+	race = df['Perpetrator Race']
 	weapon = df['Weapon']
 	freq = dict()
 
@@ -103,14 +120,11 @@ def raceWeapon():
 			key = {currRace:{currWeapon: 1}}
 			freq.update(key)
 
-	"""
-	stat_counter = collections.Counter(df['Perpetrator Race'])
-	states_counter = collections.Counter(df['Weapon'])
-	output_dicts = [{'Perpetrator Race': i, 'Weapon': m, 'Frequency': f} for i, r in stat_counter.items() for m, f in states_counter.items()]
+	#print(freq)
+	freq1 = [{'Perpetrator Race': pr, 'Weapon': [{'Weapon': w, 'Freq': f} for w, f in ss.items()]} for pr, ss in freq.items()]
 	file = open("RaceWeapon.js", "w+")
-	file.write(json.dumps(output_dicts))
+	file.write(json.dumps(freq1))
 	file.close()
-
 
 ################################
 
@@ -170,8 +184,9 @@ def murderRatePerpAgeDec():
 			freq.update(key)
 
 	#print(freq)
+	freq1 = [{'Decade': d, 'Perpetrator Age': [{'Perpetrator Age': pa, 'Freq': f} for pa, f in ss.items()]} for d, ss in freq.items()]
 	file = open("MurderRatePerpAgeDec.js", "w+")
-	file.write(json.dumps(str(freq)))
+	file.write(json.dumps(str(freq1)))
 	file.close()
 
 ################################
@@ -179,7 +194,7 @@ def murderRatePerpAgeDec():
 def murderPerpAgeState():
 	xl = pd.ExcelFile('Murders.xlsx')
 	df = xl.parse('Sheet1')
-	"""age = df['Perpetrator Age']
+	age = df['Perpetrator Age']
 	state = df['State']
 	freq = dict()
 
@@ -196,12 +211,11 @@ def murderPerpAgeState():
 			key = {currState:{currAge:1}}
 			freq.update(key)
 
-	#print(freq)"""
-	stat_counter = collections.Counter(df['Perpetrator Age'])
-	states_counter = collections.Counter(df['State'])
-	output_dicts = [{'Perpetrator Age': i, 'State': m, 'Frequency': f} for i, r in stat_counter.items() for m, f in states_counter.items()]
+	#print(freq)
+	freq1 = [{'State': s, 'Perpetrator Age': [{'Perpetrator Age': pa, 'Freq': f} for pa, f in ss.items()]} for s, ss in freq.items()]
+
 	file = open("MurderPerpAgeState.js", "w+")
-	file.write(json.dumps(output_dicts))
+	file.write(json.dumps(str(freq1)))
 	file.close()
 
 ################################
@@ -258,8 +272,9 @@ def murderRateVicAgeDec():
 			freq.update(key)
 
 	#print(freq)
+	freq1 = [{'Decade': d, 'Victim Age': [{'Victim Age': va, 'Freq': f} for va, f in ss.items()]} for d, ss in freq.items()]
 	file = open("MurderRateVicAgeDec.js", "w+")
-	file.write(json.dumps(str(freq)))
+	file.write(json.dumps(str(freq1)))
 	file.close()
 
 ################################
@@ -267,7 +282,7 @@ def murderRateVicAgeDec():
 def murderVicAgeState():
 	xl = pd.ExcelFile('Murders.xlsx')
 	df = xl.parse('Sheet1')
-	"""age = df['Victim Age']
+	age = df['Victim Age']
 	state = df['State']
 	freq = dict()
 
@@ -285,21 +300,16 @@ def murderVicAgeState():
 			freq.update(key)
 
 	#print(freq)
+	freq1 = [{'State': s, 'Victim Age': [{'Victim Age': va, 'Freq': f} for va, f in ss.items()]} for s, ss in freq.items()]
 	file = open("MurderVicAgeState.js", "w+")
-	file.write(json.dumps(str(freq)))
-	file.close()"""
-	stat_counter = collections.Counter(df['Victim Age'])
-	states_counter = collections.Counter(df['State'])
-	output_dicts = [{'Victim Age': i, 'State': m, 'Frequency': f} for i, r in stat_counter.items() for m, f in states_counter.items()]
-	file = open("MurderVicAgeState.js", "w+")
-	file.write(json.dumps(output_dicts))
+	file.write(json.dumps(str(freq1)))
 	file.close()
 
 ################################
 
 def cityWeapons():
 	df = pd.ExcelFile('Murders.xlsx').parse('Sheet1')
-	"""stateDf = df['State']
+	stateDf = df['State']
 	cityDf = df['City']
 	weaponDf = df['Weapon']
 	data = dict()
@@ -322,21 +332,11 @@ def cityWeapons():
 			s = {currState:{currCity:{currWeapon:1}}}
 			data.update(s)
 
-	f = open("CityWeapons.js", "w+")
-	f.write(json.dumps(data))
-	f.close()"""
-	st_counter = collections.Counter(df['State'])
-        #stat_counter = collections.Counter(df['City'])
-        #stat_counter = collections.Counter(df['City'])
-
-	states_counter = collections.Counter(df['Weapon'])
-	stat_counter = collections.Counter(df['City'])
-
-	output_dicts = [{'State': s, 'City': i, 'Weapon': m, 'Frequency': f} for s, j in st_counter.items() for i, r in stat_counter.items() for m, f in states_counter.items()]
+	freq1 = [{'State': s, 'City': [{'City': c, 'Weapon': [{'Weapon': w, 'Freq': f} for w, f in ss.items()]} for c, ss in sa.items()]} for s, sa in data.items()]
+	#print(freq1)
 	file = open("CityWeapons.js", "w+")
-	file.write(json.dumps(output_dicts))
+	file.write(json.dumps(str(freq1)))
 	file.close()
-
 
 #################################PERPETRATOR SEX#############################
 
@@ -439,7 +439,7 @@ def victRace():
 def stateAgen():
 	xl = pd.ExcelFile('Murders.xlsx')
 	df = xl.parse('Sheet1')
-	"""yrDf = df['State']
+	yrDf = df['State']
 	stateDf = df['Agency Name']
 	yrStateDict = dict()
 
@@ -457,17 +457,10 @@ def stateAgen():
 			yrStateDict.update(s)
 
 	#print(yrStateDict)
+	freq1 = [{'State': s, 'Agency Name': [{'Agency Name': an, 'Freq': f} for an, f in ss.items()]} for s, ss in yrStateDict.items()]
 	file = open("StateAgen.js", "w+")
-	file.write(json.dumps(yrStateDict))
-	file.close()  """
-	stat_counter = collections.Counter(df['State'])
-	states_counter = collections.Counter(df['Agency Name'])
-	output_dicts = [{'State': i, 'Agency Name': m, 'Frequency': f} for i, r in stat_counter.items() for m, f in states_counter.items()]
-	file = open("StateAgen.js", "w+")
-	file.write(json.dumps(output_dicts))
-	file.close()
-
-
+	file.write(json.dumps(freq1))
+	file.close()  
 
 
 ###############################Weapon Used Based on Perpetrator Sex########################################
@@ -475,7 +468,7 @@ def stateAgen():
 def weaponPerpSex():
 	xl = pd.ExcelFile('Murders.xlsx')
 	df = xl.parse('Sheet1')
-	"""yrDf = df['Weapon']
+	yrDf = df['Weapon']
 	stateDf = df['Perpetrator Sex']
 	yrStateDict = dict()
 
@@ -492,19 +485,16 @@ def weaponPerpSex():
 			s = {currYear:{currState: 1}}
 			yrStateDict.update(s)
 
-	# print(yrStateDict)
-	# print(counts)
+	# # print(yrStateDict)
+	# # print(counts)
+	# file = open("WeaponPerpSex.js", "w+")
+	# file.write(json.dumps(yrStateDict))
+	# file.close()  
+
+	freq1 = [{'State': s, 'Agency Name': [{'Agency Name': an, 'Freq': f} for an, f in ss.items()]} for s, ss in yrStateDict.items()]
 	file = open("WeaponPerpSex.js", "w+")
-	file.write(json.dumps(yrStateDict))
-	file.close()  """
-	stat_counter = collections.Counter(df['Weapon'])
-	states_counter = collections.Counter(df['Perpetrator Sex'])
-	output_dicts = [{'Weapon': i, 'Perpetrator Sex': m, 'Frequency': f} for i, r in stat_counter.items() for m, f in states_counter.items()]
-	file = open("WeaponPerpSex.js", "w+")
-	file.write(json.dumps(output_dicts))
+	file.write(json.dumps(freq1))
 	file.close()
-
-
 
 #######################################How many crimes happen per month##################################################
 
@@ -536,19 +526,19 @@ def crimesMonth():
 
 #murderRateState()
 # murderRateDecState()
-#weaponRelationship()
+# weaponRelationship()
 #raceWeapon()
 #murderPerpAge()
 # murderRatePerpAgeDec()
-#murderPerpAgeState()
+# murderPerpAgeState()
 #murderVicAge()
 # murderRateVicAgeDec()
-#murderVicAgeState()
-# cityWeapons() # file too big 
+# murderVicAgeState()
+# cityWeapons()
 #perpSex()
 #perpRace()
 #victSex()
 #victRace()
-# stateAgen() # too big file
-#weaponPerpSex() # too big file
+# stateAgen()
+# weaponPerpSex()
 #crimesMonth()
